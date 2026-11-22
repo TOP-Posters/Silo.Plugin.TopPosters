@@ -1,0 +1,111 @@
+{
+  "plugin_id": "topposters.artwork",
+  "version": "0.1.0",
+  "checksum": "__CHECKSUM__",
+  "silo_api_version": "v1",
+  "presentation": {
+    "display_name": "TOP Posters",
+    "summary": "Posters, season posters, backgrounds and logos with ratings from your TOP Posters API key.",
+    "description_markdown": "Adds TOP Posters artwork to movies and series: posters with ratings, season posters, backgrounds and title logos. Their look follows your TOP Posters dashboard, where this server appears as the **Silo Server** device.\n\nThis provider never identifies an item. It uses the TMDB or IMDb ID that another provider, such as TMDB, already matched.",
+    "setup_markdown": "1. Paste your TOP Posters API key below and choose the artwork types.\n2. In **Admin > Libraries**, add **TOP Posters** to the movie and series metadata providers and move it **above TMDB**: Silo takes each image from the first provider that has one.\n3. Refresh the library metadata. Items whose images you picked by hand stay locked until you choose a TOP Posters image in **Edit Metadata > Images**.\n\nLogos and backgrounds need TOP Posters Premium and must also be enabled in your TOP Posters dashboard.",
+    "homepage_url": "https://top-posters.com",
+    "source_url": "https://github.com/TOP-Posters/Silo.Plugin.TopPosters",
+    "support_url": "https://github.com/TOP-Posters/Silo.Plugin.TopPosters/issues",
+    "changelog_url": "https://github.com/TOP-Posters/Silo.Plugin.TopPosters/releases",
+    "publisher_name": "TOP Posters",
+    "publisher_url": "https://top-posters.com"
+  },
+  "supported_platforms": [
+    { "os": "darwin", "arch": "arm64" },
+    { "os": "freebsd", "arch": "amd64" },
+    { "os": "freebsd", "arch": "arm64" },
+    { "os": "linux", "arch": "amd64" },
+    { "os": "linux", "arch": "arm64" }
+  ],
+  "capabilities": [
+    {
+      "type": "metadata_provider.v1",
+      "id": "topposters",
+      "display_name": "TOP Posters",
+      "description": "Rated posters, season posters, backgrounds and logos. Artwork only: never identifies an item.",
+      "metadata": {
+        "lookup_provider_ids": ["tmdb", "imdb"],
+        "lookup_images": true,
+        "default_priority": { "movie": 1, "series": 1, "season": 1 }
+      }
+    },
+    {
+      "type": "image_resolver.v1",
+      "id": "topposters",
+      "display_name": "TOP Posters Images",
+      "description": "Resolves topposters:// image paths to the TOP Posters API.",
+      "metadata": { "schemes": ["topposters"], "priority": 100 }
+    }
+  ],
+  "global_config_schema": [
+    {
+      "key": "account",
+      "title": "TOP Posters account",
+      "description": "Without an API key the provider stays idle and contributes nothing.",
+      "json_schema": "{\"type\":\"object\",\"properties\":{\"api_key\":{\"type\":\"string\"},\"base_url\":{\"type\":\"string\"}},\"additionalProperties\":false}",
+      "required": true,
+      "admin_form": {
+        "submit_label": "Save TOP Posters account",
+        "fields": [
+          {
+            "key": "api_key",
+            "label": "API Key",
+            "description": "Your key from the TOP Posters dashboard.",
+            "control": "ADMIN_FORM_CONTROL_PASSWORD",
+            "secret": true
+          },
+          {
+            "key": "base_url",
+            "label": "API address",
+            "description": "Leave empty to use https://api.top-posters.com.",
+            "control": "ADMIN_FORM_CONTROL_TEXT",
+            "placeholder": "https://api.top-posters.com"
+          }
+        ]
+      }
+    },
+    {
+      "key": "artwork",
+      "title": "Artwork types",
+      "description": "Which images TOP Posters offers to Silo.",
+      "json_schema": "{\"type\":\"object\",\"properties\":{\"posters\":{\"type\":\"boolean\"},\"season_posters\":{\"type\":\"boolean\"},\"backdrops\":{\"type\":\"boolean\"},\"logos\":{\"type\":\"boolean\"}},\"additionalProperties\":false}",
+      "admin_form": {
+        "submit_label": "Save artwork types",
+        "fields": [
+          {
+            "key": "posters",
+            "label": "Movie and series posters",
+            "control": "ADMIN_FORM_CONTROL_SWITCH",
+            "default_value": true
+          },
+          {
+            "key": "season_posters",
+            "label": "Season posters",
+            "description": "Offered in the season image picker.",
+            "control": "ADMIN_FORM_CONTROL_SWITCH",
+            "default_value": true
+          },
+          {
+            "key": "backdrops",
+            "label": "Backgrounds",
+            "description": "Premium. Enable backgrounds in the TOP Posters dashboard too.",
+            "control": "ADMIN_FORM_CONTROL_SWITCH",
+            "default_value": false
+          },
+          {
+            "key": "logos",
+            "label": "Title logos",
+            "description": "Premium. Enable logos in the TOP Posters dashboard too.",
+            "control": "ADMIN_FORM_CONTROL_SWITCH",
+            "default_value": false
+          }
+        ]
+      }
+    }
+  ]
+}
