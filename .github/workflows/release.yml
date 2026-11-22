@@ -1,0 +1,19 @@
+name: Release
+
+# Builds, signs and publishes the plugin with Silo's shared release workflow:
+# one binary per supported platform, checksums.txt and a Sigstore bundle.
+# Tag the commit on main that raised manifest.json "version" with v<version>.
+on:
+  push:
+    tags: ['v*']
+
+permissions: {}
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    # Always @main: Silo accepts only signatures from plugin-release.yml@refs/heads/main.
+    uses: Silo-Server/.github/.github/workflows/plugin-release.yml@main

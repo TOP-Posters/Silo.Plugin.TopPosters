@@ -29,15 +29,20 @@ to every image at once. Silo caches each image as WebP at several widths.
 
 ## Set up
 
-1. Install the plugin: **Admin > Integrations > Plugins > Install from a file**,
-   with the binary for your server's platform from the releases.
+1. Download the binary for your server from the
+   [latest release](https://github.com/TOP-Posters/Silo.Plugin.TopPosters/releases/latest):
+   `plugin-linux-amd64` for most servers and NAS, `plugin-linux-arm64` for ARM
+   devices and Docker on Apple silicon, `plugin-darwin-arm64` or
+   `plugin-freebsd-*` for Silo installed directly on macOS or FreeBSD. Install
+   it in **Admin > Integrations > Plugins > Install from a file**.
 2. Open the plugin settings, paste the API key and choose the artwork types.
    Logos and backgrounds also need to be enabled in the TOP Posters dashboard.
 3. New libraries list TOP Posters right after local NFO files and before
    TMDB/TVDB for movies, series and seasons. For a library created before the
-   plugin was installed, add **TOP Posters** in **Admin > Libraries > Metadata
-   providers** at those levels and move it above TMDB and TVDB. Silo takes each
-   image from the first provider in the chain that has one.
+   plugin was installed, open **Admin > Libraries**, edit the library and in
+   **Provider Priority** move **TOP Posters** above TMDB and TVDB at those
+   levels. Silo takes each image from the first provider in the chain that has
+   one.
 4. Refresh the library metadata.
 
 ## Limits
@@ -61,3 +66,10 @@ missing.
 make test
 make build-all   # dist/plugin-<os>-<arch> for every platform Silo supports
 ```
+
+## Release
+
+Raise `"version"` in `manifest.json` in a commit on `main`, then push the tag
+`v<version>` on that commit. The release workflow builds the binaries with
+Silo's shared `plugin-release.yml`, signs them and publishes them with
+`checksums.txt` and `plugin.sigstore.json`.
